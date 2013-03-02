@@ -1,0 +1,8 @@
+ingredient "Water", :amount => "2 cups"
+ingredient "Noodles", :amount => "1 cup"
+ingredient "Cheese", :amount => "1/2 cup"
+
+step "Heat water to boiling.", :for => "5 minutes"
+step "Add noodles to boiling water.", :for => "6 minutes"
+step "Drain water."
+step "Mix cheese in with noodles."

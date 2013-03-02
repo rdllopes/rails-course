@@ -1,0 +1,20 @@
+API de Internacionalização do Rails
+Este guia cobre como adicionar internacionalização em sua aplicação. Sua aplicação irá ser capaz de traduzir conteúdo para diferentes idiomas, alterar regras de pluralização, usar formatação correta de datas para cada país e muito mais.
+
+Testando Aplicações Rails
+Este é um guia para a compreenção da prática de testes unitários e funcionais no Rails. Ele cobre tudo desde “O que são testes?” até a as APIs de testes. Aproveite.
+
+Guia de Segurança para Aplicações Rails
+Este guia descreve problemas de segurança comuns em aplicações web e como evita-los com Rails.
+
+Debugando Aplicações Rails
+Este guia descreve como depurar aplicações Rails. Ele cobre diferentes formas de faze-lo e como entender o que está acontecendo “nos bastidores” do seu código.
+
+Configuring Rails Applications
+Este guia cobre as opções básicas de configuração para uma aplicação Rails.
+
+Rails Command Line Tools and Rake tasks
+Este guia cobre as ferramentas de linha de comando e tarefas rake disponibilizadas pelo Rails. (Ainda em desenvolvimento)
+
+Caching with Rails
+Varia técnicas de caching disponibilizadas pelo Rails. (Ainda em desenvolvimento)

@@ -1,0 +1,349 @@
+\documentclass[serif,mathserif]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{comment}
+\usepackage[portuges]{babel}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{dcolumn}
+\usepackage{hyperref}
+\usepackage{courier}
+\usepackage{caption}
+
+\lstdefinestyle{xml}{language=xml,tabsize=3,frame=lines,keywordstyle=\color{blue},commentstyle=\color{OliveGreen},stringstyle=\color{red},breaklines=true,showstringspaces=false,basicstyle=\footnotesize,emph={label}}
+\lstdefinestyle{java}{language=java,tabsize=3,frame=lines,keywordstyle=\color{blue},commentstyle=\color{OliveGreen},stringstyle=\color{red},breaklines=true,showstringspaces=false,basicstyle=\footnotesize,emph={label}}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\renewcommand{\lstlistingname}{Código}
+
+\lstloadlanguages{Ruby}
+\lstdefinelanguage{Smalltalk}{ 
+  morekeywords={true,false,self,super,nil}, 
+  sensitive=true, 
+  morecomment=[s]{"}{"}, 
+  morestring=[d]', 
+  style=SmalltalkStyle 
+} 
+\lstdefinestyle{SmalltalkStyle}{ 
+  literate={:=}{{$\gets$}}1{^}{{$\uparrow$}}1 
+}
+
+\author{ 
+    \\ Rodrigo di Lorenzo Lopes \\  \texttt{rodrigo.lorenzo@abril.com.br}
+}
+\title{Curso: Ruby on Rails}
+
+\begin{document}
+\maketitle
+ 
+\tableofcontents
+
+\section{Introduction}
+
+\subsection{O que sabemos}
+
+Ruby é uma linguagem dinâmica que favorece a metaprogramação.
+
+A linguagem favorece a criação de artefatos que tornam a programação mais enxuta e expressiva.
+
+\subsection{Referências}
+
+\href{http://guias.rubyonrails.com.br/}{Ruby on Rails guides}
+
+\section{Ecosistema Ruby on Rails}
+
+\subsection{Gems}
+
+Sistema de pacotes do Ruby
+
+\begin{itemize}
+  \item Instalação do pacote (similar ao apt-get)
+  \item Repositório de pacotes 
+\end{itemize}
+
+\subsubsection{Exemplo de uso}
+\begin{lstlisting}
+gem install methodize
+\end{lstlisting}
+
+\begin{verbatim}
+Successfully installed methodize-0.2.2
+1 gem installed
+\end{verbatim}
+
+\subsection{Bundler}
+
+\subsubsection{Bundler by Bundler}
+
+Bundler tracks an application's code and the rubygems it needs to run, so that an application will always have the exact gems (and versions) that it needs to run.
+
+\subsubsection{Bundler + Gemfile}
+
+Assim como o apt-get, gem install irá procurar a última versão da biblioteca procurada.
+
+Um Gemfile é similar ao pom.xml do Maven
+
+\begin{lstlisting}
+# These gems are in the :default group
+gem "nokogiri"
+gem "sinatra"
+
+gem "wirble", :group => :development
+
+group :test do
+  gem "rspec"
+  gem "faker"
+end
+\end{lstlisting}
+
+Para gerar uma aplicação a 
+\begin{verbatim}
+bundle install
+\end{verbatim}
+
+\subsection {DSL}
+Gemfile é bom exemplo como Ruby favorece a criação de DSLs.
+
+Ruby possui três comandos para interpretação de texto:
+\begin{enumerate}
+  \item eval
+  \item instance\_eval
+  \item class\_eval
+\end{enumerate}
+
+\subsection{class\_eval}
+\begin{lstlisting}[language=ruby]
+mod.class_eval(string [, filename [, lineno]]) => obj
+\end{lstlisting}
+
+
+\begin{quote}
+Evaluates the string or block in the context of mod. This can be used to add methods to a class.
+\end{quote}
+
+
+\subsubsection{instance\_eval}
+\begin{lstlisting}[language=ruby]
+obj.instance_eval {| | block } => obj
+\end{lstlisting}
+
+\begin{quote}
+Evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj). In order to set the context, the variable self is set to obj while the code is executing, giving the code access to obj’s instance variables.
+\end{quote}
+
+\subsubsection{Mind trick - class\_eval vs instance\_eval}
+
+\begin{lstlisting}[language=ruby]
+Foo = Class.new
+Foo.class_eval do
+  def class_bar
+    "class_bar"
+  end
+end
+Foo.instance_eval do
+  def instance_bar
+    "instance_bar"
+  end
+end
+\end{lstlisting}
+
+\subsubsection{What's going to happen? - class\_eval vs instance\_eval}
+\begin{lstlisting}[language=ruby]
+Foo.class_bar
+Foo.new.class_bar 
+Foo.instance_bar
+Foo.new.instance_bar
+\end{lstlisting}
+
+
+\subsubsection{What's going to happen? - class\_eval vs instance\_eval}
+\begin{lstlisting}[language=ruby]
+Foo.class_bar   #=> undefined method 'class_bar' for Foo:Class
+Foo.new.class_bar #=> "class_bar"
+Foo.instance_bar #=> "instance_bar"
+Foo.new.instance_bar #=> undefined method 'instance_bar' for
+\end{lstlisting}
+
+\subsubsection{É tudo sobre o self - class\_eval vs instance\_eval}
+\begin{tabular}{ l | c | c |  r }
+mechanism &	method resolution &	method definition &	new scope? \\
+class Person &	Person &	same &	yes \\
+class << Person	Person's & metaclass &	same &	yes\\
+Person.class\_eval & Person & same & no\\
+Person.instance\_eval & Person & Person's metaclass & no
+\end{tabular}
+
+
+\subsection {Desafio - DSL - Receita Macarronada com Queijo}
+
+\href{http://rubylearning.com/blog/2010/11/30/how-do-i-build-dsls-with-yield-and-instance_eval/}{how-do-i-build-dsls}
+
+\subsubsection{Qual a estrutura deve ser criada para cuidar disso?}
+\begin{lstlisting}[language=ruby]
+mac_and_cheese = Recipe.new("Mac and Cheese") do
+  ingredient "Water", :amount => "2 cups"
+  ingredient "Noodles", :amount => "1 cup"
+  ingredient "Cheese", :amount => "1/2 cup"
+
+  step "Heat water to boiling.", :for => "5 minutes"
+  step "Add noodles to boiling water.", :for => "6 minutes"
+  step "Drain water."
+  step "Mix cheese in with noodles."
+end
+\end{lstlisting}
+
+\subsubsection{Que tal assim?}
+\begin{lstlisting}[language=ruby]
+def initialize(name, &block)
+  self.name = name
+  self.ingredients = []
+  self.instructions = []
+  instance_eval &block
+end
+\end{lstlisting}
+
+\subsubsection{Métodos auxiliares}
+\begin{lstlisting}[language=ruby]
+  def ingredient(name, options = {})
+    ingredient = name
+    ingredient << " (#{options[:amount]})" if options[:amount]
+    ingredients << ingredient
+  end
+
+  def step(text, options = {})
+    instruction = text
+    instruction << " (#{options[:for]})" if options[:for]
+    instructions << instruction
+  end
+\end{lstlisting}
+
+\subsubsection{DSL - Receita - Resultado}
+\begin{lstlisting}[language=ruby]
+file = File.open(ARGV[0], "rb")
+contents = file.read
+recipe = Recipe.new ARGV[0], contents
+p recipe
+
+ruby recipes.rb mac_cheese.txt 
+#<Recipe:0x00000101086f90 @name="mac_cheese.txt", 
+@ingredients=["Water (2 cups)", 
+#"Noodles (1 cup)", "Cheese (1/2 cup)"], 
+#@instructions=["Heat water to boiling. (5 minutes)", 
+#"Add noodles to boiling water. (6 minutes)", 
+#"Drain water.", "Mix cheese in with noodles."]>
+\end{lstlisting}
+
+
+\subsection{Gemfile detalhes}
+
+\subsubsection{Declarando Gem servers}
+\begin{lstlisting}[language=ruby]
+source :rubygems
+source "http://rubygems.org"
+source :rubyforge
+source "http://gems.rubyforge.org"
+source :gemcutter
+source "http://gemcutter.org"
+\end{lstlisting}
+
+\subsubsection{Especificando a versão adequada das gemas}
+\begin{lstlisting}[language=ruby]
+gem "nokogiri"
+gem "rails", "3.0.0.beta3"
+gem "rack",  ">=1.0"
+gem "thin",  "~>1.1"
+\end{lstlisting}
+
+\subsubsection{Nota sobre os Espeficiadores de versão}
+Most of the version specifiers, like $\geq 1.0$, are self-explanatory. The specifier \verb|~>| has a special meaning, best shown by example. \verb|~> 2.0.3| is identical to $\geq 2.0.3$ and $<  2.1$. \verb|~> 2.1| is identical to $ \geq 2.1$ and $< 3.0$.
+
+\subsubsection{Obtendo gemas do Git}
+\begin{lstlisting}[language=ruby]
+gem "nokogiri", :git => "git://github.com/tenderlove/nokogiri.git", :branch => "1.4"
+
+git "git://github.com/wycats/thor.git", :tag => "v0.13.4"
+gem "thor"
+\end{lstlisting}
+
+\subsubsection{Grupos no Gemfile}
+É possível atribuir gemas que são úteis em contextos específicos
+\begin{lstlisting}[language=ruby]
+# These gems are in the :default group
+gem "nokogiri"
+gem "sinatra"
+
+gem "wirble", :group => :development
+
+group :test do
+  gem "rspec"
+  gem "faker"
+end
+\end{lstlisting}
+  
+Install all gems, except those in the listed groups. Gems in at least one non-excluded group will still be installed.
+\begin{verbatim}
+$ bundle install --without test development
+\end{verbatim}
+
+\subsection{RVM}
+ 
+\subsection{Mongo}
+
+\subsection{MongoMapper}
+
+\section{Rails - Primeiros Passos}
+
+\subsection{Rails HelloWorld}
+
+\section{Model}
+
+\subsection{Rails Database Migrations}
+This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
+
+\subsubsection{Rails Database Migrations in Mongo}
+
+\subsubsection{Rails Database Migrations - Take that}
+Não há necessidadde de migrations porque estamos usando mongo.
+Evitamos dor e sofrimento.
+
+\subsection{MongoMapper Validations and Callbacks}
+This guide covers how you can use Active Record validations and callbacks.
+
+\subsection{MongoMapper Associations}
+This guide covers all the associations provided by Active Record.
+
+
+\subsubsection{Query Interface}
+This guide covers the database query interface provided by Active Record.
+
+
+
+\section{Views}
+
+\subsection{Layouts e Renderização no Rails}
+  Este guia cobre o básico dos recursos de layout do Action Controller e Action View,
+  incluindo renderização e redirecionamento, usando blocos content\_for, e trabalhando com partials.
+
+\subsection{Action View Form Helpers}
+  Guia para utilização dos Form helpers do Rails.
+
+\subsection{Jsonify}
+
+\subsection{REST in rails}
+
+
+
+Controllers
+Visão Geral do Action Controller
+Este guia explica como os controllers trabalham e como eles se encaixam no ciclo de requisição de sua aplicação. Ele inclue sessões, filtros, cookies, streaming de dados, como trabalhar com exceções levantadas por um request, entre outros tópicos.
+
+Roteamento Rails de Fora para Dentro
+Este guia cobre as maravilhas do sistema de roteamento do Rails. Se você quer entender como usar as rotas em suas aplicações Rails, comece por aqui.
+
+Rails on Rack
+Este guia cobre a integração do Rails com Rack e sua interface com componentes Rack.
+
+
+
+
+\end{document}
