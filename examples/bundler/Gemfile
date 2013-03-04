@@ -1,0 +1,12 @@
+# These gems are in the :default group
+# gem "nokogiri"
+source :rubygems
+
+gem "sinatra"
+
+gem "wirble", :group => :development
+
+group :test do
+  gem "rspec"
+  gem "faker"
+end

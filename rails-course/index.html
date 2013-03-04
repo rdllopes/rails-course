@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="css/reset.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" href="css/favicon.png" />
+    <link rel="apple-touch-icon" href="css/apple-touch-icon.png" />
+    <!-- Code Prettifier: -->
+<link href="css/highlight.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+  </head>
+
+  <body>
+  <div class="fallback-message">
+  <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+  <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+  </div>
+    <div id="impress">
+    <div class='step' >
+    
+<h1>Introduction</h1>
+</div>
+      <div class='step' >
+    
+<h2>O que sabemos</h2>
+
+<p>Ruby é uma linguagem dinâmica que favorece a metaprogramação.</p>
+
+<p>A linguagem favorece a criação de artefatos que tornam a programação
+mais enxuta e expressiva.</p>
+</div>
+      <div class='step' >
+    
+<h2>Referências</h2>
+
+<p><a href="http://guias.rubyonrails.com.br/">Ruby on Rails guides</a></p>
+</div>
+      <div class='step' >
+    
+<h1>Ecosistema Ruby on Rails</h1>
+</div>
+      <div class='step' >
+    
+<h2>Gems</h2>
+
+<p>Sistema de pacotes do Ruby</p>
+
+<ul>
+<li><p>Instalação do pacote (similar ao apt-get)</p></li>
+<li><p>Repositório de pacotes</p></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<p>Exemplo de uso</p>
+<pre><code class='prettyprint '>gem install methodize
+
+Successfully installed methodize-0.2.2
+1 gem installed
+</code></pre></div>
+      <div class='step' >
+    
+<h2>Bundler</h2>
+</div>
+      <div class='step' >
+    
+<h3>Bundler by Bundler</h3>
+
+<p>Bundler tracks an application’s code and the rubygems it needs to run,
+so that an application will always have the exact gems (and versions)
+that it needs to run.</p>
+</div>
+      <div class='step' >
+    
+<h3>Bundler + Gemfile</h3>
+
+<p>Assim como o apt-get, gem install irá procurar a última versão da
+biblioteca procurada.</p>
+
+<p>Um Gemfile é similar ao pom.xml do Maven</p>
+<pre><code class='prettyprint '># These gems are in the :default group
+gem "nokogiri"
+gem "sinatra"
+
+gem "wirble", :group => :development
+
+group :test do
+  gem "rspec"
+  gem "faker"
+end
+</code></pre></div>
+      <div class='step' >
+    
+<p>Para gerar uma aplicação a</p>
+<pre><code class='prettyprint '>bundle install
+</code></pre></div>
+      <div class='step' >
+    
+<h2>DSL</h2>
+
+<p>Gemfile é bom exemplo como Ruby favorece a criação de DSLs.</p>
+
+<p>Ruby possui três comandos para interpretação de texto:</p>
+
+<ol>
+<li> eval</li>
+<li> instance_eval</li>
+<li> class_eval</li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h2>class_eval</h2>
+<pre><code class='prettyprint '>mod.class_eval(string [, filename [, lineno]]) => obj
+</code></pre>
+<blockquote>
+<p>Evaluates the string or block in the context of mod. This can be used
+to add methods to a class.</p>
+</blockquote>
+</div>
+      <div class='step' >
+    
+<p>instance_eval</p>
+<pre><code class='prettyprint '>obj.instance_eval {| | block } => obj
+</code></pre>
+<blockquote>
+<p>Evaluates a string containing Ruby source code, or the given block,
+within the context of the receiver (obj). In order to set the context,
+the variable self is set to obj while the code is executing, giving
+the code access to obj’s instance variables.</p>
+</blockquote>
+</div>
+      <div class='step' >
+    
+<p>Mind trick - class_eval vs instance_eval</p>
+<pre><code class='prettyprint '>Foo = Class.new
+Foo.class_eval do
+  def class_bar
+    "class_bar"
+  end
+end
+Foo.instance_eval do
+  def instance_bar
+    "instance_bar"
+  end
+end
+</code></pre></div>
+      <div class='step' >
+    
+<p>What’s going to happen? - class_eval vs instance_eval</p>
+<pre><code class='prettyprint '>Foo.class_bar
+Foo.new.class_bar 
+Foo.instance_bar
+Foo.new.instance_bar
+</code></pre></div>
+      <div class='step' >
+    
+<p>What’s going to happen? - class_eval vs instance_eval</p>
+<pre><code class='prettyprint '>Foo.class_bar   #=> undefined method 'class_bar' for Foo:Class
+Foo.new.class_bar #=> "class_bar"
+Foo.instance_bar #=> "instance_bar"
+Foo.new.instance_bar #=> undefined method 'instance_bar' for
+</code></pre></div>
+      <div class='step' >
+    
+<p>É tudo sobre o self - class_eval vs instance_eval</p>
+
+<table>
+<tr><td>mechanism </td><td> method resolution </td><td> method definition </td><td> new scope?</td></tr>
+<tr><td>class Person </td><td> Person </td><td> same </td><td> yes</td></tr>
+<tr><td>class Person Person’s </td><td> metaclass </td><td> same </td><td> yes</td></tr>
+<tr><td>Person.class\_eval </td><td> Person </td><td> same </td><td> no</td></tr>
+<tr><td>Person.instance\_eval </td><td> Person </td><td> Person’s metaclass </td><td> no</td></tr>
+</table>
+</div>
+      <div class='step' >
+    
+<h2>Desafio - DSL - Receita Macarronada com Queijo</h2>
+
+<p><a href="http://rubylearning.com/blog/2010/11/30/how-do-i-build-dsls-with-yield-and-instance_eval/">how-do-i-build-dsls</a></p>
+</div>
+      <div class='step' >
+    
+<p>Qual a estrutura deve ser criada para cuidar disso?</p>
+<pre><code class='prettyprint '>mac_and_cheese = Recipe.new("Mac and Cheese") do
+  ingredient "Water", :amount => "2 cups"
+  ingredient "Noodles", :amount => "1 cup"
+  ingredient "Cheese", :amount => "1/2 cup"
+
+  step "Heat water to boiling.", :for => "5 minutes"
+  step "Add noodles to boiling water.", :for => "6 minutes"
+  step "Drain water."
+  step "Mix cheese in with noodles."
+end
+</code></pre></div>
+      <div class='step' >
+    
+<p>Que tal assim?</p>
+<pre><code class='prettyprint '>def initialize(name, &block)
+  self.name = name
+  self.ingredients = []
+  self.instructions = []
+  instance_eval &block
+end
+</code></pre></div>
+      <div class='step' >
+    
+<p>Métodos auxiliares</p>
+<pre><code class='prettyprint '>def ingredient(name, options = {})
+    ingredient = name
+    ingredient << " (#{options[:amount]})" if options[:amount]
+    ingredients << ingredient
+  end
+
+  def step(text, options = {})
+    instruction = text
+    instruction << " (#{options[:for]})" if options[:for]
+    instructions << instruction
+  end
+</code></pre></div>
+      <div class='step' >
+    
+<p>DSL - Receita - Resultado</p>
+<pre><code class='prettyprint '>file = File.open(ARGV[0], "rb")
+contents = file.read
+recipe = Recipe.new ARGV[0], contents
+p recipe
+
+ruby recipes.rb mac_cheese.txt 
+#<Recipe:0x00000101086f90 @name="mac_cheese.txt", 
+@ingredients=["Water (2 cups)", 
+#"Noodles (1 cup)", "Cheese (1/2 cup)"], 
+#@instructions=["Heat water to boiling. (5 minutes)", 
+#"Add noodles to boiling water. (6 minutes)", 
+#"Drain water.", "Mix cheese in with noodles."]>
+</code></pre></div>
+      <div class='step' >
+    
+<h2>Gemfile detalhes</h2>
+
+<h2>Declarando Gem servers</h2>
+<pre><code class='prettyprint '>source :rubygems
+source "http://rubygems.org"
+source :rubyforge
+source "http://gems.rubyforge.org"
+source :gemcutter
+source "http://gemcutter.org"
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Especificando a versão adequada das gemas</h3>
+<pre><code class='prettyprint '>gem "nokogiri"
+gem "rails", "3.0.0.beta3"
+gem "rack",  ">=1.0"
+gem "thin",  "~>1.1"
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Nota sobre os Espeficiadores de versão</h3>
+
+<p>Most of the version specifiers, like $\geq 1.0$, are self-explanatory.
+The specifier <code class='inline prettyprint'>~></code> has a special meaning, best shown by example.
+<code class='inline prettyprint'>~> 2.0.3</code> is identical to $\geq 2.0.3$ and $&lt;  2.1$. <code class='inline prettyprint'>~> 2.1</code> is
+identical to $ \geq 2.1$ and $&lt; 3.0$.</p>
+</div>
+      <div class='step' >
+    
+<h3>Obtendo gemas do Git</h3>
+<pre><code class='prettyprint '>gem "nokogiri", :git => "git://github.com/tenderlove/nokogiri.git", :branch => "1.4"
+
+git "git://github.com/wycats/thor.git", :tag => "v0.13.4"
+gem "thor"
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Grupos no Gemfile</h3>
+
+<p>É possível atribuir gemas que são úteis em contextos específicos</p>
+<pre><code class='prettyprint '># These gems are in the :default group
+gem "nokogiri"
+gem "sinatra"
+
+gem "wirble", :group => :development
+
+group :test do
+  gem "rspec"
+  gem "faker"
+end
+</code></pre>
+<p>Install all gems, except those in the listed groups. Gems in at least
+one non-excluded group will still be installed.</p>
+<pre><code class='prettyprint '>$ bundle install --without test development
+</code></pre></div>
+      <div class='step' >
+    
+<h2>RVM</h2>
+
+<h3>Instalação:</h3>
+<pre><code class='prettyprint '>$ \curl -L https://get.rvm.io | bash -s stable --ruby
+</code></pre>
+<p>Como usar:</p>
+
+<ol>
+<li>Criar um gemset para o projeto</li>
+<li><p>Criar um arquivo .rvm no projeto:</p>
+
+<p>echo &quot;rvm user gemset xxx&quot; &gt; .rvmrc</p></li>
+<li><p>Voltar ao diretório</p></li>
+<li><p>Usar bunlder normalment</p></li>
+</ol>
+</div>
+      <div class='step' >
+    
+<h2>Mongo</h2>
+</div>
+      <div class='step' >
+    
+<h2>MongoMapper</h2>
+</div>
+      <div class='step' >
+    
+<h1>Rails - Primeiros Passos</h1>
+</div>
+      <div class='step' >
+    
+<h2>Rails HelloWorld</h2>
+</div>
+      <div class='step' >
+    
+<h1>Model</h1>
+</div>
+      <div class='step' >
+    
+<h2>Rails Database Migrations</h2>
+
+<p>This guide covers how you can use Active Record migrations to alter your
+database in a structured and organized manner.</p>
+</div>
+      <div class='step' >
+    
+<p>Rails Database Migrations in Mongo</p>
+</div>
+      <div class='step' >
+    
+<p>Rails Database Migrations - Take that</p>
+
+<p>Não há necessidadde de migrations porque estamos usando mongo. Evitamos
+dor e sofrimento.</p>
+</div>
+      <div class='step' >
+    
+<h2>MongoMapper Validations and Callbacks</h2>
+
+<p>This guide covers how you can use Active Record validations and
+callbacks.</p>
+</div>
+      <div class='step' >
+    
+<h2>MongoMapper Associations</h2>
+
+<p>This guide covers all the associations provided by Active Record.</p>
+</div>
+      <div class='step' >
+    
+<p>Query Interface</p>
+
+<p>This guide covers the database query interface provided by Active
+Record.</p>
+</div>
+      <div class='step' >
+    
+<h1>Views</h1>
+</div>
+      <div class='step' >
+    
+<h2>Layouts e Renderização no Rails</h2>
+
+<p>Este guia cobre o básico dos recursos de layout do Action Controller e
+Action View, incluindo renderização e redirecionamento, usando blocos
+content_for, e trabalhando com partials.</p>
+</div>
+      <div class='step' >
+    
+<h2>Action View Form Helpers</h2>
+
+<p>Guia para utilização dos Form helpers do Rails.</p>
+</div>
+      <div class='step' >
+    
+<h2>Jsonify</h2>
+</div>
+      <div class='step' >
+    
+<h2>REST in rails</h2>
+
+<p>Controllers Visão Geral do Action Controller Este guia explica como os
+controllers trabalham e como eles se encaixam no ciclo de requisição de
+sua aplicação. Ele inclue sessões, filtros, cookies, streaming de dados,
+como trabalhar com exceções levantadas por um request, entre outros
+tópicos.</p>
+
+<p>Roteamento Rails de Fora para Dentro Este guia cobre as maravilhas do
+sistema de roteamento do Rails. Se você quer entender como usar as rotas
+em suas aplicações Rails, comece por aqui.</p>
+
+<p>Rails on Rack Este guia cobre a integração do Rails com Rack e sua
+interface com componentes Rack.</p>
+
+      </div>
+    <script src="js/impress.js"></script>
+    <script>impress().init();</script>
+  </body>
+</html>
+    
