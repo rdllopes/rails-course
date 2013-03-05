@@ -1,5 +1,5 @@
 Introduction
-============
+================
 
 ---
 O que sabemos
@@ -20,6 +20,7 @@ Referências
 Ecosistema Ruby on Rails
 ============================
 
+
 ---
 Gems
 --------
@@ -31,7 +32,7 @@ Sistema de pacotes do Ruby
 -   Repositório de pacotes
 
 ---
-### Exemplo de uso
+Exemplo de uso
 
     gem install methodize
 
@@ -67,26 +68,20 @@ Um Gemfile é similar ao pom.xml do Maven
       gem "rspec"
       gem "faker"
     end
-
 ---
-### bundle install
-
-Para gerar uma aplicação
+Para gerar uma aplicação a
 
     bundle install
-
 ---
 DSL
--------
+---
 
 Gemfile é bom exemplo como Ruby favorece a criação de DSLs.
 
 Ruby possui três comandos para interpretação de texto:
 
 1.  eval
-
 2.  instance\_eval
-
 3.  class\_eval
 
 ---
@@ -99,7 +94,7 @@ class\_eval
 > to add methods to a class.
 
 ---
-### instance\_eval
+instance\_eval
 
     obj.instance_eval {| | block } => obj
 
@@ -109,7 +104,7 @@ class\_eval
 > the code access to obj’s instance variables.
 
 ---
-### Mind trick - class\_eval vs instance\_eval
+Mind trick - class\_eval vs instance\_eval
 
     Foo = Class.new
     Foo.class_eval do
@@ -124,7 +119,7 @@ class\_eval
     end
 
 ---
-### What’s going to happen? - class\_eval vs instance\_eval
+What’s going to happen? - class\_eval vs instance\_eval
 
     Foo.class_bar
     Foo.new.class_bar 
@@ -132,7 +127,7 @@ class\_eval
     Foo.new.instance_bar
 
 ---
-### What’s going to happen? - class\_eval vs instance\_eval
+What’s going to happen? - class\_eval vs instance\_eval
 
     Foo.class_bar   #=> undefined method 'class_bar' for Foo:Class
     Foo.new.class_bar #=> "class_bar"
@@ -140,24 +135,26 @@ class\_eval
     Foo.new.instance_bar #=> undefined method 'instance_bar' for
 
 ---
-### É tudo sobre o self - class\_eval vs instance\_eval
+É tudo sobre o self - class\_eval vs instance\_eval
 
-l | c | c | r
 
-mechanism & method resolution & method definition & new scope?\
-class Person & Person & same & yes\
-class \<\< Person Person’s & metaclass & same & yes\
-Person.class\_eval & Person & same & no\
-Person.instance\_eval & Person & Person’s metaclass & no
+<table>
+<tr><td>mechanism </td><td> method resolution </td><td> method definition </td><td> new scope?</td></tr>
+<tr><td>class Person </td><td> Person </td><td> same </td><td> yes</td></tr>
+<tr><td>class Person Person’s </td><td> metaclass </td><td> same </td><td> yes</td></tr>
+<tr><td>Person.class\_eval </td><td> Person </td><td> same </td><td> no</td></tr>
+<tr><td>Person.instance\_eval </td><td> Person </td><td> Person’s metaclass </td><td> no</td></tr>
+</table>
 
 ---
+ 
 Desafio - DSL - Receita Macarronada com Queijo
---------------------------------------------------
+----------------------------------------------
 
 [how-do-i-build-dsls](http://rubylearning.com/blog/2010/11/30/how-do-i-build-dsls-with-yield-and-instance_eval/)
 
 ---
-### Qual a estrutura deve ser criada para cuidar disso?
+Qual a estrutura deve ser criada para cuidar disso?
 
     mac_and_cheese = Recipe.new("Mac and Cheese") do
       ingredient "Water", :amount => "2 cups"
@@ -171,7 +168,7 @@ Desafio - DSL - Receita Macarronada com Queijo
     end
 
 ---
-### Que tal assim?
+Que tal assim?
 
     def initialize(name, &block)
       self.name = name
@@ -181,7 +178,7 @@ Desafio - DSL - Receita Macarronada com Queijo
     end
 
 ---
-### Métodos auxiliares
+Métodos auxiliares
 
     def ingredient(name, options = {})
         ingredient = name
@@ -196,7 +193,7 @@ Desafio - DSL - Receita Macarronada com Queijo
       end
 
 ---
-### DSL - Receita - Resultado
+DSL - Receita - Resultado
 
     file = File.open(ARGV[0], "rb")
     contents = file.read
@@ -214,8 +211,7 @@ Desafio - DSL - Receita Macarronada com Queijo
 ---
 Gemfile detalhes
 --------------------
-
-### Declarando Gem servers
+## Declarando Gem servers
 
     source :rubygems
     source "http://rubygems.org"
@@ -273,229 +269,24 @@ one non-excluded group will still be installed.
 RVM
 -------
 
----
-### Vantagens
+### Instalação:
 
-1.  Permite a instalação de várias versões do Ruby
+    $ \curl -L https://get.rvm.io | bash -s stable --ruby
 
-2.  Permite a criação de Gemsets que agrupam versões específicas de
-    gemas para certas funcionalidades.
+Como usar:
 
----
-### Instalação
+1. Criar um gemset para o projeto
+2. Criar um arquivo .rvm no projeto:
 
-        $ \curl -L https://get.rvm.io | bash -s stable --ruby
+    echo "rvm user gemset xxx" > .rvmrc
 
----
-### Instalar um novo Ruby
+3. Voltar ao diretório
+4. Usar bunlder normalment
 
-        $ rvm install jruby
-        $ rvm get stable
-
-Para listar as versoes instaladas:
-
-        $ rvm list
-
-Para listar a versão atual:
-
-        $ rvm current
-
----
-### Criando Gemsets
-
-        $ rvm gemset create
-
-Para listar os gemset criados para a versão de ruby atual:
-
-        $ rvm gemset list
-
-Para usar um gemset específico:
-
-        $ rvm use ruby_version@gemset
-
----
-### Criando Gemsets II
-
-Na prática
-
-1.  Criar um gemset para o projeto
-
-2.  Criar um arquivo .rvm no projeto:
-
-            echo "rvm user gemset xxx" > .rvmrc
-
-3.  Voltar ao diretório
-
-4.  Usar bundler normalmente
-
----
-RSpec
----------
-
-<http://rspec.info/>
-
-RSpec is testing tool for the Ruby programming language. Born under the
-banner of Behaviour-Driven Development.
-
----
-### Get Started Now
-
-    $ gem install rspec
-
----
-### Rspec - Simple Example
-
-    # bowling_spec.rb
-    require 'bowling'
-
-    describe Bowling, "#score" do
-      it "returns 0 for all gutter game" do
-        bowling = Bowling.new
-        20.times { bowling.hit(0) }
-        bowling.score.should eq(0)
-      end
-    end
-
----
-### Rspec - Running
-
-     rspec bowling_spec.rb
-
-    ./bowling_spec.rb:4:
-      uninitialized constant Bowling
-
----
-### Rspec - coding BDD
-
-    # bowling.rb
-    class Bowling
-      def hit(pins)
-      end
-
-      def score
-        0
-      end
-    end
-
----
-### Rspec - Running Ok!
-
-    $ rspec bowling_spec.rb --format nested
-
-    Bowling#score
-      returns 0 for all gutter game
-
-    Finished in 0.007534 seconds
-
-    1 example, 0 failures
-
----
-### Rspec - Basic structure
-
-    "Describe an order."
-    "It sums the prices of its line items."
-
-    describe Order do
-      it "sums the prices of its line items" do
-        order = Order.new
-        order.add_entry(LineItem.new(:item => Item.new(
-          :price => Money.new(1.11, :USD)
-        )))
-        order.add_entry(LineItem.new(:item => Item.new(
-          :price => Money.new(2.22, :USD),
-          :quantity => 2
-        )))
-        expect(order.total).to eq(Money.new(5.55, :USD))
-      end
-    end
-
----
-### Rspec - Nested Groups
-
-    describe Order do
-      context "with no items" do
-        it "behaves one way" do
-          # ...
-        end
-      end
-
-      context "with one item" do
-        it "behaves another way" do
-          # ...
-        end
-      end
-    end
 
 ---
 Mongo
 ---------
-
-<http://www.mongodb.org/>
-
-Mongo é um banco de dados NoSQL.
-
-<http://docs.mongodb.org/manual/tutorial/getting-started-with-the-mongo-shell>
-<http://docs.mongodb.org/manual/reference/mongo-shell/>
-<http://api.mongodb.org/js/2.3.2/symbols/_global_.html>
-<http://docs.mongodb.org/manual/tutorial/getting-started/>
-
----
-### Principais características
-
--   Document-Oriented Storage
-
--   Full Index Support
-
--   Auto-Sharding
-
--   Querying
-
--   Map/Reduce
-
----
-### Instalação
-
-Baixar e instalar o pacote adequato em
-<http://www.mongodb.org/downloads>.
-
-Executar o daemon: mongod.
-
----
-### Mongo Shell
-
-Mongo possui uma inteface interessante em shell baseado em javascript.
-
-    for (var i=0; i<100; i++) {
-       print(i);
-     }
-
----
-### Mongo Shell - Database
-
-    show dbs // lista as bases
-    use nome_da_base // cria e/ou usa uma base
-    db // mostra a base atual selecionada
-    show collections // mostra as colecoes da base
-    db["3test"].find() // busca todos documentos dessa colecao
-    db.getCollection("3test").find() // isso faz a mesma coisa
-
----
-### Mongo Shell - Print
-
-    db.<collection>.find().pretty()
-
-In addition, you can use the following explicit print methods in the
-mongo shell:
-
-    print() // to print without formatting
-    print(tojson(<obj>)) // to print with JSON 
-                //  formatting and equivalent to printjson()
-    printjson() // to print with JSON formatting
-                // and equivalent to print(tojson(<obj>))
-
-### Mongo Profile - Exemplo
-
-    db.setProfilingLevel(0)
 
 ---
 MongoMapper
@@ -521,10 +312,10 @@ This guide covers how you can use Active Record migrations to alter your
 database in a structured and organized manner.
 
 ---
-### Rails Database Migrations in Mongo
+Rails Database Migrations in Mongo
 
 ---
-### Rails Database Migrations - Take that
+Rails Database Migrations - Take that
 
 Não há necessidadde de migrations porque estamos usando mongo. Evitamos
 dor e sofrimento.
@@ -543,7 +334,7 @@ MongoMapper Associations
 This guide covers all the associations provided by Active Record.
 
 ---
-### Query Interface
+Query Interface
 
 This guide covers the database query interface provided by Active
 Record.

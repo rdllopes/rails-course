@@ -24,6 +24,14 @@
   morestring=[d]', 
   style=SmalltalkStyle 
 } 
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, this, throw, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true
+}
 \lstdefinestyle{SmalltalkStyle}{ 
   literate={:=}{{$\gets$}}1{^}{{$\uparrow$}}1 
 }
@@ -40,19 +48,19 @@
 
 \section{Introduction}
 
-\subsection{O que sabemos}
+\subsection{\#\#O que sabemos}
 
 Ruby é uma linguagem dinâmica que favorece a metaprogramação.
 
 A linguagem favorece a criação de artefatos que tornam a programação mais enxuta e expressiva.
 
-\subsection{Referências}
+\subsection{\#\#Referências}
 
 \href{http://guias.rubyonrails.com.br/}{Ruby on Rails guides}
 
-\section{Ecosistema Ruby on Rails}
+\section{\#\#Ecosistema Ruby on Rails}
 
-\subsection{Gems}
+\subsection{\#\#Gems}
 
 Sistema de pacotes do Ruby
 
@@ -61,7 +69,7 @@ Sistema de pacotes do Ruby
   \item Repositório de pacotes 
 \end{itemize}
 
-\subsubsection{Exemplo de uso}
+\subsubsection{\#\#Exemplo de uso}
 \begin{lstlisting}
 gem install methodize
 \end{lstlisting}
@@ -71,13 +79,13 @@ Successfully installed methodize-0.2.2
 1 gem installed
 \end{verbatim}
 
-\subsection{Bundler}
+\subsection{\#\#Bundler}
 
-\subsubsection{Bundler by Bundler}
+\subsubsection{\#\#Bundler by Bundler}
 
 Bundler tracks an application's code and the rubygems it needs to run, so that an application will always have the exact gems (and versions) that it needs to run.
 
-\subsubsection{Bundler + Gemfile}
+\subsubsection{\#\#Bundler + Gemfile}
 
 Assim como o apt-get, gem install irá procurar a última versão da biblioteca procurada.
 
@@ -96,12 +104,14 @@ group :test do
 end
 \end{lstlisting}
 
-Para gerar uma aplicação a 
+\subsubsection {\#\#bundle install}
+
+Para gerar uma aplicação
 \begin{verbatim}
 bundle install
 \end{verbatim}
 
-\subsection {DSL}
+\subsection {\#\#DSL}
 Gemfile é bom exemplo como Ruby favorece a criação de DSLs.
 
 Ruby possui três comandos para interpretação de texto:
@@ -111,7 +121,7 @@ Ruby possui três comandos para interpretação de texto:
   \item class\_eval
 \end{enumerate}
 
-\subsection{class\_eval}
+\subsection{\#\#class\_eval}
 \begin{lstlisting}[language=ruby]
 mod.class_eval(string [, filename [, lineno]]) => obj
 \end{lstlisting}
@@ -122,7 +132,7 @@ Evaluates the string or block in the context of mod. This can be used to add met
 \end{quote}
 
 
-\subsubsection{instance\_eval}
+\subsubsection{\#\#instance\_eval}
 \begin{lstlisting}[language=ruby]
 obj.instance_eval {| | block } => obj
 \end{lstlisting}
@@ -131,7 +141,7 @@ obj.instance_eval {| | block } => obj
 Evaluates a string containing Ruby source code, or the given block, within the context of the receiver (obj). In order to set the context, the variable self is set to obj while the code is executing, giving the code access to obj’s instance variables.
 \end{quote}
 
-\subsubsection{Mind trick - class\_eval vs instance\_eval}
+\subsubsection{\#\#Mind trick - class\_eval vs instance\_eval}
 
 \begin{lstlisting}[language=ruby]
 Foo = Class.new
@@ -147,7 +157,7 @@ Foo.instance_eval do
 end
 \end{lstlisting}
 
-\subsubsection{What's going to happen? - class\_eval vs instance\_eval}
+\subsubsection{\#\#What's going to happen? - class\_eval vs instance\_eval}
 \begin{lstlisting}[language=ruby]
 Foo.class_bar
 Foo.new.class_bar 
@@ -156,7 +166,7 @@ Foo.new.instance_bar
 \end{lstlisting}
 
 
-\subsubsection{What's going to happen? - class\_eval vs instance\_eval}
+\subsubsection{\#\#What's going to happen? - class\_eval vs instance\_eval}
 \begin{lstlisting}[language=ruby]
 Foo.class_bar   #=> undefined method 'class_bar' for Foo:Class
 Foo.new.class_bar #=> "class_bar"
@@ -164,7 +174,7 @@ Foo.instance_bar #=> "instance_bar"
 Foo.new.instance_bar #=> undefined method 'instance_bar' for
 \end{lstlisting}
 
-\subsubsection{É tudo sobre o self - class\_eval vs instance\_eval}
+\subsubsection{\#\#É tudo sobre o self - class\_eval vs instance\_eval}
 \begin{tabular}{ l | c | c |  r }
 mechanism &	method resolution &	method definition &	new scope? \\
 class Person &	Person &	same &	yes \\
@@ -174,11 +184,11 @@ Person.instance\_eval & Person & Person's metaclass & no
 \end{tabular}
 
 
-\subsection {Desafio - DSL - Receita Macarronada com Queijo}
+\subsection {\#\#Desafio - DSL - Receita Macarronada com Queijo}
 
 \href{http://rubylearning.com/blog/2010/11/30/how-do-i-build-dsls-with-yield-and-instance_eval/}{how-do-i-build-dsls}
 
-\subsubsection{Qual a estrutura deve ser criada para cuidar disso?}
+\subsubsection{\#\#Qual a estrutura deve ser criada para cuidar disso?}
 \begin{lstlisting}[language=ruby]
 mac_and_cheese = Recipe.new("Mac and Cheese") do
   ingredient "Water", :amount => "2 cups"
@@ -192,7 +202,7 @@ mac_and_cheese = Recipe.new("Mac and Cheese") do
 end
 \end{lstlisting}
 
-\subsubsection{Que tal assim?}
+\subsubsection{\#\#Que tal assim?}
 \begin{lstlisting}[language=ruby]
 def initialize(name, &block)
   self.name = name
@@ -202,7 +212,7 @@ def initialize(name, &block)
 end
 \end{lstlisting}
 
-\subsubsection{Métodos auxiliares}
+\subsubsection{\#\#Métodos auxiliares}
 \begin{lstlisting}[language=ruby]
   def ingredient(name, options = {})
     ingredient = name
@@ -217,7 +227,7 @@ end
   end
 \end{lstlisting}
 
-\subsubsection{DSL - Receita - Resultado}
+\subsubsection{\#\#DSL - Receita - Resultado}
 \begin{lstlisting}[language=ruby]
 file = File.open(ARGV[0], "rb")
 contents = file.read
@@ -234,7 +244,7 @@ ruby recipes.rb mac_cheese.txt
 \end{lstlisting}
 
 
-\subsection{Gemfile detalhes}
+\subsection{\#\#Gemfile detalhes}
 
 \subsubsection{Declarando Gem servers}
 \begin{lstlisting}[language=ruby]
@@ -246,7 +256,7 @@ source :gemcutter
 source "http://gemcutter.org"
 \end{lstlisting}
 
-\subsubsection{Especificando a versão adequada das gemas}
+\subsubsection{\#\#Especificando a versão adequada das gemas}
 \begin{lstlisting}[language=ruby]
 gem "nokogiri"
 gem "rails", "3.0.0.beta3"
@@ -254,10 +264,10 @@ gem "rack",  ">=1.0"
 gem "thin",  "~>1.1"
 \end{lstlisting}
 
-\subsubsection{Nota sobre os Espeficiadores de versão}
+\subsubsection{\#\#Nota sobre os Espeficiadores de versão}
 Most of the version specifiers, like $\geq 1.0$, are self-explanatory. The specifier \verb|~>| has a special meaning, best shown by example. \verb|~> 2.0.3| is identical to $\geq 2.0.3$ and $<  2.1$. \verb|~> 2.1| is identical to $ \geq 2.1$ and $< 3.0$.
 
-\subsubsection{Obtendo gemas do Git}
+\subsubsection{\#\#Obtendo gemas do Git}
 \begin{lstlisting}[language=ruby]
 gem "nokogiri", :git => "git://github.com/tenderlove/nokogiri.git", :branch => "1.4"
 
@@ -265,7 +275,7 @@ git "git://github.com/wycats/thor.git", :tag => "v0.13.4"
 gem "thor"
 \end{lstlisting}
 
-\subsubsection{Grupos no Gemfile}
+\subsubsection{\#\#Grupos no Gemfile}
 É possível atribuir gemas que são úteis em contextos específicos
 \begin{lstlisting}[language=ruby]
 # These gems are in the :default group
@@ -285,51 +295,287 @@ Install all gems, except those in the listed groups. Gems in at least one non-ex
 $ bundle install --without test development
 \end{verbatim}
 
-\subsection{RVM}
+\subsection{\#\#RVM}
+
+\subsubsection{\#\#Vantagens}
+
+\begin{enumerate}
+  \item Permite a instalação de várias versões do Ruby
+  \item Permite a criação de Gemsets que agrupam versões específicas de gemas para certas funcionalidades.
+\end{enumerate}
+
+
+\subsubsection{\#\#Instalação}
+
+\begin{verbatim}
+    $ \curl -L https://get.rvm.io | bash -s stable --ruby
+\end{verbatim}
+
+\subsubsection{\#\#Instalar um novo Ruby}
+
+\begin{verbatim}
+    $ rvm install jruby
+    $ rvm get stable
+\end{verbatim}
+
+Para listar as versoes instaladas:
+\begin{verbatim}
+    $ rvm list
+\end{verbatim}
+
+Para listar a versão atual:
+\begin{verbatim}
+    $ rvm current
+\end{verbatim}
+
+
+\subsubsection{\#\#Criando Gemsets}
+
+\begin{verbatim}
+    $ rvm gemset create
+\end{verbatim}
+
+Para listar os gemset criados para a versão de ruby atual:
+\begin{verbatim}
+    $ rvm gemset list
+\end{verbatim}
+
+Para usar um gemset específico:
+\begin{verbatim}
+    $ rvm use ruby_version@gemset
+\end{verbatim}
+
+\subsubsection{\#\#Criando Gemsets II}
+Na prática
+
+\begin{enumerate}
+  \item Criar um gemset para o projeto
+  \item Criar um arquivo .rvm no projeto:
+\begin{verbatim}
+    echo "rvm user gemset xxx" > .rvmrc
+\end{verbatim}
+ \item Voltar ao diretório
+ \item Usar bundler normalmente
+\end{enumerate}
+
+\subsection{\#\#RSpec}
+
+\url{http://rspec.info/}
+
+RSpec is testing tool for the Ruby programming language. Born under the banner of Behaviour-Driven Development.
+
+\subsubsection{\#\#Get Started Now}
+
+\begin{verbatim}
+$ gem install rspec
+\end{verbatim}
+
+\subsubsection{\#\#Rspec - Simple Example}
+\begin{lstlisting}[language=ruby]
+# bowling_spec.rb
+require 'bowling'
+
+describe Bowling, "#score" do
+  it "returns 0 for all gutter game" do
+    bowling = Bowling.new
+    20.times { bowling.hit(0) }
+    bowling.score.should eq(0)
+  end
+end
+\end{lstlisting}
+
+\subsubsection{\#\#Rspec - Running}
+\begin{verbatim}
+ rspec bowling_spec.rb
+
+./bowling_spec.rb:4:
+  uninitialized constant Bowling
+\end{verbatim}
+
+
+\subsubsection{\#\#Rspec - coding BDD}
+\begin{lstlisting}[language=ruby]
+# bowling.rb
+class Bowling
+  def hit(pins)
+  end
+
+  def score
+    0
+  end
+end
+\end{lstlisting}
+
+\subsubsection{\#\#Rspec - Running Ok!}
+\begin{verbatim}
+$ rspec bowling_spec.rb --format nested
+
+Bowling#score
+  returns 0 for all gutter game
+
+Finished in 0.007534 seconds
+
+1 example, 0 failures
+\end{verbatim}
+
+\subsubsection{\#\#Rspec - Basic structure}
+\begin{verbatim}
+"Describe an order."
+"It sums the prices of its line items."
+\end{verbatim}
+
+\begin{lstlisting}[language=ruby]
+describe Order do
+  it "sums the prices of its line items" do
+    order = Order.new
+    order.add_entry(LineItem.new(:item => Item.new(
+      :price => Money.new(1.11, :USD)
+    )))
+    order.add_entry(LineItem.new(:item => Item.new(
+      :price => Money.new(2.22, :USD),
+      :quantity => 2
+    )))
+    expect(order.total).to eq(Money.new(5.55, :USD))
+  end
+end
+\end{lstlisting}
+
+\subsubsection{\#\#Rspec - Nested Groups}
+\begin{lstlisting}[language=ruby]
+ describe Order do
+  context "with no items" do
+    it "behaves one way" do
+      # ...
+    end
+  end
+
+  context "with one item" do
+    it "behaves another way" do
+      # ...
+    end
+  end
+end
+\end{lstlisting}
+
  
-\subsection{Mongo}
+\subsection{\#\#Mongo}
 
-\subsection{MongoMapper}
+\url{http://www.mongodb.org/}
 
-\section{Rails - Primeiros Passos}
+Mongo é um banco de dados NoSQL.
 
-\subsection{Rails HelloWorld}
+\url{http://docs.mongodb.org/manual/tutorial/getting-started-with-the-mongo-shell}
+\url{http://docs.mongodb.org/manual/reference/mongo-shell/}
+\url{http://api.mongodb.org/js/2.3.2/symbols/_global_.html}
+\url{http://docs.mongodb.org/manual/tutorial/getting-started/}
 
-\section{Model}
 
-\subsection{Rails Database Migrations}
+\subsubsection{\#\#Principais características}
+\begin{itemize}
+  \item Document-Oriented Storage
+  \item Full Index Support
+  \item Auto-Sharding
+  \item Querying
+  \item Map/Reduce
+\end{itemize}
+
+\subsubsection{\#\#Instalação}
+
+Baixar e instalar o pacote adequato em \url{http://www.mongodb.org/downloads}.
+
+Executar o daemon: mongod.
+
+\subsubsection{\#\#Mongo Shell}
+
+Mongo possui uma inteface interessante em shell baseado em javascript.
+
+\begin{lstlisting}[language=Javascript]
+ for (var i=0; i<100; i++) {
+   print(i);
+ }
+\end{lstlisting}
+
+\subsubsection{\#\#Mongo Shell - Database}
+
+\begin{lstlisting}[language=Javascript]
+show dbs // lista as bases
+use nome_da_base // cria e/ou usa uma base
+db // mostra a base atual selecionada
+show collections // mostra as colecoes da base
+db["3test"].find() // busca todos documentos dessa colecao
+db.getCollection("3test").find() // isso faz a mesma coisa
+\end{lstlisting}
+
+\subsubsection{\#\#Mongo Shell - Print}
+\begin{lstlisting}[language=Javascript]
+db.<collection>.find().pretty()
+\end{lstlisting}
+
+In addition, you can use the following explicit print methods in the mongo shell:
+\begin{lstlisting}[language=Javascript]
+print() // to print without formatting
+print(tojson(<obj>)) // to print with JSON 
+            //  formatting and equivalent to printjson()
+printjson() // to print with JSON formatting
+            // and equivalent to print(tojson(<obj>))
+\end{lstlisting}
+
+
+\subsubsection{Mongo Profile - Exemplo}
+\begin{lstlisting}[language=Javascript]
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Javascript]
+db.setProfilingLevel(0)
+\end{lstlisting}
+
+
+
+\subsection{\#\#MongoMapper}
+
+
+
+\section{\#\#Rails - Primeiros Passos}
+
+\subsection{\#\#Rails HelloWorld}
+
+\section{\#\#Model}
+
+\subsection{\#\#Rails Database Migrations}
 This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
 
-\subsubsection{Rails Database Migrations in Mongo}
+\subsubsection{\#\#Rails Database Migrations in Mongo}
 
-\subsubsection{Rails Database Migrations - Take that}
+\subsubsection{\#\#Rails Database Migrations - Take that}
 Não há necessidadde de migrations porque estamos usando mongo.
 Evitamos dor e sofrimento.
 
-\subsection{MongoMapper Validations and Callbacks}
+\subsection{\#\#MongoMapper Validations and Callbacks}
 This guide covers how you can use Active Record validations and callbacks.
 
-\subsection{MongoMapper Associations}
+\subsection{\#\#MongoMapper Associations}
 This guide covers all the associations provided by Active Record.
 
 
-\subsubsection{Query Interface}
+\subsubsection{\#\#Query Interface}
 This guide covers the database query interface provided by Active Record.
 
 
 
-\section{Views}
+\section{\#\#Views}
 
-\subsection{Layouts e Renderização no Rails}
+\subsection{\#\#Layouts e Renderização no Rails}
   Este guia cobre o básico dos recursos de layout do Action Controller e Action View,
   incluindo renderização e redirecionamento, usando blocos content\_for, e trabalhando com partials.
 
-\subsection{Action View Form Helpers}
+\subsection{\#\#Action View Form Helpers}
   Guia para utilização dos Form helpers do Rails.
 
-\subsection{Jsonify}
+\subsection{\#\#Jsonify}
 
-\subsection{REST in rails}
+\subsection{\#\#REST in rails}
 
 
 

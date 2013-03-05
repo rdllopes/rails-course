@@ -58,7 +58,7 @@ mais enxuta e expressiva.</p>
 </div>
       <div class='step' >
     
-<p>Exemplo de uso</p>
+<h3>Exemplo de uso</h3>
 <pre><code class='prettyprint '>gem install methodize
 
 Successfully installed methodize-0.2.2
@@ -97,7 +97,9 @@ end
 </code></pre></div>
       <div class='step' >
     
-<p>Para gerar uma aplicação a</p>
+<h3>bundle install</h3>
+
+<p>Para gerar uma aplicação</p>
 <pre><code class='prettyprint '>bundle install
 </code></pre></div>
       <div class='step' >
@@ -109,9 +111,9 @@ end
 <p>Ruby possui três comandos para interpretação de texto:</p>
 
 <ol>
-<li> eval</li>
-<li> instance_eval</li>
-<li> class_eval</li>
+<li><p>eval</p></li>
+<li><p>instance_eval</p></li>
+<li><p>class_eval</p></li>
 </ol>
 </div>
       <div class='step' >
@@ -126,7 +128,7 @@ to add methods to a class.</p>
 </div>
       <div class='step' >
     
-<p>instance_eval</p>
+<h3>instance_eval</h3>
 <pre><code class='prettyprint '>obj.instance_eval {| | block } => obj
 </code></pre>
 <blockquote>
@@ -138,7 +140,7 @@ the code access to obj’s instance variables.</p>
 </div>
       <div class='step' >
     
-<p>Mind trick - class_eval vs instance_eval</p>
+<h3>Mind trick - class_eval vs instance_eval</h3>
 <pre><code class='prettyprint '>Foo = Class.new
 Foo.class_eval do
   def class_bar
@@ -153,7 +155,7 @@ end
 </code></pre></div>
       <div class='step' >
     
-<p>What’s going to happen? - class_eval vs instance_eval</p>
+<h3>What’s going to happen? - class_eval vs instance_eval</h3>
 <pre><code class='prettyprint '>Foo.class_bar
 Foo.new.class_bar 
 Foo.instance_bar
@@ -161,7 +163,7 @@ Foo.new.instance_bar
 </code></pre></div>
       <div class='step' >
     
-<p>What’s going to happen? - class_eval vs instance_eval</p>
+<h3>What’s going to happen? - class_eval vs instance_eval</h3>
 <pre><code class='prettyprint '>Foo.class_bar   #=> undefined method 'class_bar' for Foo:Class
 Foo.new.class_bar #=> "class_bar"
 Foo.instance_bar #=> "instance_bar"
@@ -169,15 +171,15 @@ Foo.new.instance_bar #=> undefined method 'instance_bar' for
 </code></pre></div>
       <div class='step' >
     
-<p>É tudo sobre o self - class_eval vs instance_eval</p>
+<h3>É tudo sobre o self - class_eval vs instance_eval</h3>
 
-<table>
-<tr><td>mechanism </td><td> method resolution </td><td> method definition </td><td> new scope?</td></tr>
-<tr><td>class Person </td><td> Person </td><td> same </td><td> yes</td></tr>
-<tr><td>class Person Person’s </td><td> metaclass </td><td> same </td><td> yes</td></tr>
-<tr><td>Person.class\_eval </td><td> Person </td><td> same </td><td> no</td></tr>
-<tr><td>Person.instance\_eval </td><td> Person </td><td> Person’s metaclass </td><td> no</td></tr>
-</table>
+<p>l | c | c | r</p>
+
+<p>mechanism &amp; method resolution &amp; method definition &amp; new scope?\
+class Person &amp; Person &amp; same &amp; yes\
+class &lt;&lt; Person Person’s &amp; metaclass &amp; same &amp; yes\
+Person.class_eval &amp; Person &amp; same &amp; no\
+Person.instance_eval &amp; Person &amp; Person’s metaclass &amp; no</p>
 </div>
       <div class='step' >
     
@@ -187,7 +189,7 @@ Foo.new.instance_bar #=> undefined method 'instance_bar' for
 </div>
       <div class='step' >
     
-<p>Qual a estrutura deve ser criada para cuidar disso?</p>
+<h3>Qual a estrutura deve ser criada para cuidar disso?</h3>
 <pre><code class='prettyprint '>mac_and_cheese = Recipe.new("Mac and Cheese") do
   ingredient "Water", :amount => "2 cups"
   ingredient "Noodles", :amount => "1 cup"
@@ -201,7 +203,7 @@ end
 </code></pre></div>
       <div class='step' >
     
-<p>Que tal assim?</p>
+<h3>Que tal assim?</h3>
 <pre><code class='prettyprint '>def initialize(name, &block)
   self.name = name
   self.ingredients = []
@@ -211,7 +213,7 @@ end
 </code></pre></div>
       <div class='step' >
     
-<p>Métodos auxiliares</p>
+<h3>Métodos auxiliares</h3>
 <pre><code class='prettyprint '>def ingredient(name, options = {})
     ingredient = name
     ingredient << " (#{options[:amount]})" if options[:amount]
@@ -226,7 +228,7 @@ end
 </code></pre></div>
       <div class='step' >
     
-<p>DSL - Receita - Resultado</p>
+<h3>DSL - Receita - Resultado</h3>
 <pre><code class='prettyprint '>file = File.open(ARGV[0], "rb")
 contents = file.read
 recipe = Recipe.new ARGV[0], contents
@@ -244,7 +246,7 @@ ruby recipes.rb mac_cheese.txt
     
 <h2>Gemfile detalhes</h2>
 
-<h2>Declarando Gem servers</h2>
+<h3>Declarando Gem servers</h3>
 <pre><code class='prettyprint '>source :rubygems
 source "http://rubygems.org"
 source :rubyforge
@@ -300,25 +302,227 @@ one non-excluded group will still be installed.</p>
       <div class='step' >
     
 <h2>RVM</h2>
-
-<h3>Instalação:</h3>
-<pre><code class='prettyprint '>$ \curl -L https://get.rvm.io | bash -s stable --ruby
-</code></pre>
-<p>Como usar:</p>
+</div>
+      <div class='step' >
+    
+<h3>Vantagens</h3>
 
 <ol>
-<li>Criar um gemset para o projeto</li>
-<li><p>Criar um arquivo .rvm no projeto:</p>
-
-<p>echo &quot;rvm user gemset xxx&quot; &gt; .rvmrc</p></li>
-<li><p>Voltar ao diretório</p></li>
-<li><p>Usar bunlder normalment</p></li>
+<li><p>Permite a instalação de várias versões do Ruby</p></li>
+<li><p>Permite a criação de Gemsets que agrupam versões específicas de
+gemas para certas funcionalidades.</p></li>
 </ol>
 </div>
       <div class='step' >
     
-<h2>Mongo</h2>
+<h3>Instalação</h3>
+<pre><code class='prettyprint '>    $ \curl -L https://get.rvm.io | bash -s stable --ruby
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Instalar um novo Ruby</h3>
+<pre><code class='prettyprint '>    $ rvm install jruby
+    $ rvm get stable
+</code></pre>
+<p>Para listar as versoes instaladas:</p>
+<pre><code class='prettyprint '>    $ rvm list
+</code></pre>
+<p>Para listar a versão atual:</p>
+<pre><code class='prettyprint '>    $ rvm current
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Criando Gemsets</h3>
+<pre><code class='prettyprint '>    $ rvm gemset create
+</code></pre>
+<p>Para listar os gemset criados para a versão de ruby atual:</p>
+<pre><code class='prettyprint '>    $ rvm gemset list
+</code></pre>
+<p>Para usar um gemset específico:</p>
+<pre><code class='prettyprint '>    $ rvm use ruby_version@gemset
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Criando Gemsets II</h3>
+
+<p>Na prática</p>
+
+<ol>
+<li><p>Criar um gemset para o projeto</p></li>
+<li><p>Criar um arquivo .rvm no projeto:</p>
+<pre><code class='prettyprint '>    echo "rvm user gemset xxx" > .rvmrc
+</code></pre></li>
+<li><p>Voltar ao diretório</p></li>
+<li><p>Usar bundler normalmente</p></li>
+</ol>
 </div>
+      <div class='step' >
+    
+<h2>RSpec</h2>
+
+<p><a href="http://rspec.info/">http://rspec.info/</a></p>
+
+<p>RSpec is testing tool for the Ruby programming language. Born under the
+banner of Behaviour-Driven Development.</p>
+</div>
+      <div class='step' >
+    
+<h3>Get Started Now</h3>
+<pre><code class='prettyprint '>$ gem install rspec
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - Simple Example</h3>
+<pre><code class='prettyprint '># bowling_spec.rb
+require 'bowling'
+
+describe Bowling, "#score" do
+  it "returns 0 for all gutter game" do
+    bowling = Bowling.new
+    20.times { bowling.hit(0) }
+    bowling.score.should eq(0)
+  end
+end
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - Running</h3>
+<pre><code class='prettyprint '> rspec bowling_spec.rb
+
+./bowling_spec.rb:4:
+  uninitialized constant Bowling
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - coding BDD</h3>
+<pre><code class='prettyprint '># bowling.rb
+class Bowling
+  def hit(pins)
+  end
+
+  def score
+    0
+  end
+end
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - Running Ok!</h3>
+<pre><code class='prettyprint '>$ rspec bowling_spec.rb --format nested
+
+Bowling#score
+  returns 0 for all gutter game
+
+Finished in 0.007534 seconds
+
+1 example, 0 failures
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - Basic structure</h3>
+<pre><code class='prettyprint '>"Describe an order."
+"It sums the prices of its line items."
+
+describe Order do
+  it "sums the prices of its line items" do
+    order = Order.new
+    order.add_entry(LineItem.new(:item => Item.new(
+      :price => Money.new(1.11, :USD)
+    )))
+    order.add_entry(LineItem.new(:item => Item.new(
+      :price => Money.new(2.22, :USD),
+      :quantity => 2
+    )))
+    expect(order.total).to eq(Money.new(5.55, :USD))
+  end
+end
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Rspec - Nested Groups</h3>
+<pre><code class='prettyprint '>describe Order do
+  context "with no items" do
+    it "behaves one way" do
+      # ...
+    end
+  end
+
+  context "with one item" do
+    it "behaves another way" do
+      # ...
+    end
+  end
+end
+</code></pre></div>
+      <div class='step' >
+    
+<h2>Mongo</h2>
+
+<p><a href="http://www.mongodb.org/">http://www.mongodb.org/</a></p>
+
+<p>Mongo é um banco de dados NoSQL.</p>
+
+<p><a href="http://docs.mongodb.org/manual/tutorial/getting-started-with-the-mongo-shell">http://docs.mongodb.org/manual/tutorial/getting-started-with-the-mongo-shell</a>
+<a href="http://docs.mongodb.org/manual/reference/mongo-shell/">http://docs.mongodb.org/manual/reference/mongo-shell/</a>
+<a href="http://api.mongodb.org/js/2.3.2/symbols/_global_.html">http://api.mongodb.org/js/2.3.2/symbols/_global_.html</a>
+<a href="http://docs.mongodb.org/manual/tutorial/getting-started/">http://docs.mongodb.org/manual/tutorial/getting-started/</a></p>
+</div>
+      <div class='step' >
+    
+<h3>Principais características</h3>
+
+<ul>
+<li><p>Document-Oriented Storage</p></li>
+<li><p>Full Index Support</p></li>
+<li><p>Auto-Sharding</p></li>
+<li><p>Querying</p></li>
+<li><p>Map/Reduce</p></li>
+</ul>
+</div>
+      <div class='step' >
+    
+<h3>Instalação</h3>
+
+<p>Baixar e instalar o pacote adequato em
+<a href="http://www.mongodb.org/downloads">http://www.mongodb.org/downloads</a>.</p>
+
+<p>Executar o daemon: mongod.</p>
+</div>
+      <div class='step' >
+    
+<h3>Mongo Shell</h3>
+
+<p>Mongo possui uma inteface interessante em shell baseado em javascript.</p>
+<pre><code class='prettyprint '>for (var i=0; i<100; i++) {
+   print(i);
+ }
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Mongo Shell - Database</h3>
+<pre><code class='prettyprint '>show dbs // lista as bases
+use nome_da_base // cria e/ou usa uma base
+db // mostra a base atual selecionada
+show collections // mostra as colecoes da base
+db["3test"].find() // busca todos documentos dessa colecao
+db.getCollection("3test").find() // isso faz a mesma coisa
+</code></pre></div>
+      <div class='step' >
+    
+<h3>Mongo Shell - Print</h3>
+<pre><code class='prettyprint '>db.<collection>.find().pretty()
+</code></pre>
+<p>In addition, you can use the following explicit print methods in the
+mongo shell:</p>
+<pre><code class='prettyprint '>print() // to print without formatting
+print(tojson(<obj>)) // to print with JSON 
+            //  formatting and equivalent to printjson()
+printjson() // to print with JSON formatting
+            // and equivalent to print(tojson(<obj>))
+</code></pre>
+<h3>Mongo Profile - Exemplo</h3>
+<pre><code class='prettyprint '>db.setProfilingLevel(0)
+</code></pre></div>
       <div class='step' >
     
 <h2>MongoMapper</h2>
@@ -344,11 +548,11 @@ database in a structured and organized manner.</p>
 </div>
       <div class='step' >
     
-<p>Rails Database Migrations in Mongo</p>
+<h3>Rails Database Migrations in Mongo</h3>
 </div>
       <div class='step' >
     
-<p>Rails Database Migrations - Take that</p>
+<h3>Rails Database Migrations - Take that</h3>
 
 <p>Não há necessidadde de migrations porque estamos usando mongo. Evitamos
 dor e sofrimento.</p>
@@ -368,7 +572,7 @@ callbacks.</p>
 </div>
       <div class='step' >
     
-<p>Query Interface</p>
+<h3>Query Interface</h3>
 
 <p>This guide covers the database query interface provided by Active
 Record.</p>
