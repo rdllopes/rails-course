@@ -458,6 +458,117 @@ end
 \end{lstlisting}
 
  
+ \subsubsection{\#\#Rspec - Nested Groups}
+\begin{lstlisting}[language=ruby]
+shared_examples "collections" do |collection_class|
+  it "is empty when first created" do
+    expect(collection_class.new).to be_empty
+  end
+end
+
+describe Array do
+  include_examples "collections", Array
+end
+
+describe Hash do
+  include_examples "collections", Hash
+end
+\end{lstlisting}
+
+\subsubsection{\#\#Rspec Expectations}
+
+\paragraph{\#\#Rspec - Equivalence}
+\begin{lstlisting}[language=ruby]
+actual.should eq(expected)  # passes if actual == expected
+actual.should == expected   # passes if actual == expected
+actual.should eql(expected) # passes if actual.eql?(expected)
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Identity}
+\begin{lstlisting}[language=ruby]
+actual.should be(expected)    # passes if actual.equal?(expected)
+actual.should equal(expected) # passes if actual.equal?(expected)
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Comparisons}
+\begin{lstlisting}[language=ruby]
+actual.should be >  expected
+actual.should be >= expected
+actual.should be <= expected
+actual.should be <  expected
+actual.should be_within(delta).of(expected)
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Regular expressions}
+\begin{lstlisting}[language=ruby]
+actual.should match(/expression/)
+actual.should =~ /expression/
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Types/classes}
+\begin{lstlisting}[language=ruby]
+actual.should be_an_instance_of(expected)
+actual.should be_a_kind_of(expected)
+\end{lstlisting}
+
+
+\paragraph{\#\#Rspec - Truthiness}
+\begin{lstlisting}[language=ruby]
+actual.should be_true  # passes if actual is truthy (not nil or false)
+actual.should be_false # passes if actual is falsy (nil or false)
+actual.should be_nil   # passes if actual is nil
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Expecting errors}
+\begin{lstlisting}[language=ruby]
+expect { ... }.to raise_error
+expect { ... }.to raise_error(ErrorClass)
+expect { ... }.to raise_error("message")
+expect { ... }.to raise_error(ErrorClass, "message")
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Expecting throws}
+\begin{lstlisting}[language=ruby]
+expect { ... }.to throw_symbol
+expect { ... }.to throw_symbol(:symbol)
+expect { ... }.to throw_symbol(:symbol, 'value')
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Yielding}
+\begin{lstlisting}[language=ruby]
+expect { |b| 5.tap(&b) }.to yield_control # passes regardless of yielded args
+
+expect { |b| yield_if_true(true, &b) }.to yield_with_no_args # passes only if no args are yielded
+
+expect { |b| 5.tap(&b) }.to yield_with_args(5)
+expect { |b| 5.tap(&b) }.to yield_with_args(Fixnum)
+expect { |b| "a string".tap(&b) }.to yield_with_args(/str/)
+
+expect { |b| [1, 2, 3].each(&b) }.to yield_successive_args(1, 2, 3)
+expect { |b| { :a => 1, :b => 2 }.each(&b) }.to yield_successive_args([:a, 1], [:b, 2])
+\end{lstlisting}
+
+\paragraph{\#\#Rspec - Predicate matchers}
+\begin{lstlisting}[language=ruby]
+actual.should be_xxx         # passes if actual.xxx?
+actual.should have_xxx(:arg) # passes if actual.has_xxx?(:arg)
+Ranges (Ruby >= 1.9 only)
+
+(1..10).should cover(3)
+
+\end{lstlisting}
+
+
+
+\paragraph{\#\#Rspec - Collection membership}
+\begin{lstlisting}[language=ruby]
+actual.should include(expected)
+actual.should start_with(expected)
+actual.should end_with(expected) 
+\end{lstlisting}
+
+
+
 \subsection{\#\#Mongo}
 
 \url{http://www.mongodb.org/}

@@ -427,6 +427,112 @@ banner of Behaviour-Driven Development.
     end
 
 ---
+### Rspec - Nested Groups
+
+    shared_examples "collections" do |collection_class|
+      it "is empty when first created" do
+        expect(collection_class.new).to be_empty
+      end
+    end
+
+    describe Array do
+      include_examples "collections", Array
+    end
+
+    describe Hash do
+      include_examples "collections", Hash
+    end
+
+---
+### Rspec Expectations
+
+---
+#### Rspec - Equivalence
+
+    actual.should eq(expected)  # passes if actual == expected
+    actual.should == expected   # passes if actual == expected
+    actual.should eql(expected) # passes if actual.eql?(expected)
+
+---
+#### Rspec - Identity
+
+    actual.should be(expected)    # passes if actual.equal?(expected)
+    actual.should equal(expected) # passes if actual.equal?(expected)
+
+---
+#### Rspec - Comparisons
+
+    actual.should be >  expected
+    actual.should be >= expected
+    actual.should be <= expected
+    actual.should be <  expected
+    actual.should be_within(delta).of(expected)
+
+---
+#### Rspec - Regular expressions
+
+    actual.should match(/expression/)
+    actual.should =~ /expression/
+
+---
+#### Rspec - Types/classes
+
+    actual.should be_an_instance_of(expected)
+    actual.should be_a_kind_of(expected)
+
+---
+#### Rspec - Truthiness
+
+    actual.should be_true  # passes if actual is truthy (not nil or false)
+    actual.should be_false # passes if actual is falsy (nil or false)
+    actual.should be_nil   # passes if actual is nil
+
+---
+#### Rspec - Expecting errors
+
+    expect { ... }.to raise_error
+    expect { ... }.to raise_error(ErrorClass)
+    expect { ... }.to raise_error("message")
+    expect { ... }.to raise_error(ErrorClass, "message")
+
+---
+#### Rspec - Expecting throws
+
+    expect { ... }.to throw_symbol
+    expect { ... }.to throw_symbol(:symbol)
+    expect { ... }.to throw_symbol(:symbol, 'value')
+
+---
+#### Rspec - Yielding
+
+    expect { |b| 5.tap(&b) }.to yield_control # passes regardless of yielded args
+
+    expect { |b| yield_if_true(true, &b) }.to yield_with_no_args # passes only if no args are yielded
+
+    expect { |b| 5.tap(&b) }.to yield_with_args(5)
+    expect { |b| 5.tap(&b) }.to yield_with_args(Fixnum)
+    expect { |b| "a string".tap(&b) }.to yield_with_args(/str/)
+
+    expect { |b| [1, 2, 3].each(&b) }.to yield_successive_args(1, 2, 3)
+    expect { |b| { :a => 1, :b => 2 }.each(&b) }.to yield_successive_args([:a, 1], [:b, 2])
+
+---
+#### Rspec - Predicate matchers
+
+    actual.should be_xxx         # passes if actual.xxx?
+    actual.should have_xxx(:arg) # passes if actual.has_xxx?(:arg)
+    Ranges (Ruby >= 1.9 only)
+
+    (1..10).should cover(3)
+
+---
+#### Rspec - Collection membership
+
+    actual.should include(expected)
+    actual.should start_with(expected)
+    actual.should end_with(expected) 
+
+---
 Mongo
 ---------
 
