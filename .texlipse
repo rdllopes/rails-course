@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Mon Feb 18 20:33:17 BRT 2013
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=rails-course.tex
+outputFile=rails-course.pdf
+langSpell=pt
+markDer=true
+srcDir=

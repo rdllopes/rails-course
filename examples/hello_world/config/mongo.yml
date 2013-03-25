@@ -1,0 +1,18 @@
+defaults: &defaults
+  host: 127.0.0.1
+  port: 27017
+
+development:
+  <<: *defaults
+  database: hello_world_development
+
+test:
+  <<: *defaults
+  database: hello_world_test
+
+# set these environment variables on your prod server
+production:
+  <<: *defaults
+  database: hello_world
+  username: <%= ENV['MONGO_USERNAME'] %>
+  password: <%= ENV['MONGO_PASSWORD'] %>
