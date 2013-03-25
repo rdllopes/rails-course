@@ -580,6 +580,7 @@ Mongo é um banco de dados NoSQL.
 \url{http://api.mongodb.org/js/2.3.2/symbols/_global_.html}
 \url{http://docs.mongodb.org/manual/tutorial/getting-started/}
 
+% falamos sobre agregação e map-reduce 
 
 \subsubsection{\#\#Principais características}
 \begin{itemize}
@@ -652,22 +653,71 @@ db.setProfilingLevel(0)
 
 \subsection{\#\#Rails HelloWorld}
 
+\subsubsection{\#\#Scafold}
+
+\url{http://guides.rubyonrails.org/getting_started.html}
+Install rails (utilizar e criar o gemset.)
+
+\begin{verbatim}
+gem install rails
+\end{verbatim}
+
+Gerar o projeto.
+\begin{verbatim}
+rails new hello_world --skip-active-record
+\end{verbatim}
+
+(criar o .rvmrc)
+
+\subsubsection{\#\#Estrutura de Diretórios}
+\begin{tabular}{ l |  r } 
+File/Folder & Purpose \\
+app/ & Contains the controllers, models, views and assets for your application. You’ll focus on this folder for the remainder of this guide. \\
+config/ & Configure your application’s runtime rules, routes, database, and more. This is covered in more detail in Configuring Rails Applications \\
+config.ru & Rack configuration for Rack based servers used to start the application.\\
+db/ & Contains your current database schema, as well as the database migrations.\\
+doc/ & In-depth documentation for your application.\\
+Gemfile\\
+Gemfile.lock & These files allow you to specify what gem dependencies are needed for your Rails application.\\
+lib/ & Extended modules for your application.\\
+log/ & Application log files.\\
+public/ & The only folder seen to the world as-is. Contains the static files and compiled assets.\\
+Rakefile & This file locates and loads tasks that can be run from the command line. The task definitions are defined throughout the components of Rails. Rather than changing Rakefile, you should add your own tasks by adding files to the lib/tasks directory of your application.\\
+README.rdoc & This is a brief instruction manual for your application. You should edit this file to tell others what your application does, how to set it up, and so on.\\
+script/ & Contains the rails script that starts your app and can contain other scripts you use to deploy or run your application.\\
+test/ & Unit tests, fixtures, and other test apparatus. These are covered in Testing Rails Applications\\
+tmp/ & Temporary files\\
+vendor/ & A place for all third-party code. In a typical Rails application, this includes Ruby Gems, the Rails source code (if you optionally install it into your project) and plugins containing additional prepackaged functionality.\\
+\end{tabular}
+
+\subsubsection{\#\#Adicionando Mongo Mapper}
+
+\begin{verbatim}
+gem "mongo_mapper"
+\end{verbatim}
+
+
+\subsubsection{\#\#Alterando o arquivo initializers}
+config/initializers/mongo.rb
+
+\begin{lstlisting}[language=ruby]
+MongoMapper.connection = Mongo::Connection.new('localhost', 27017)
+MongoMapper.database = "#myapp-#{Rails.env}"
+
+if defined?(PhusionPassenger)
+  PhusionPassenger.on_event(:starting_worker_process) do |forked|
+    MongoMapper.connection.connect if forked
+  end
+end
+\end{lstlisting}
+
 \section{\#\#Model}
 
-\subsection{\#\#Rails Database Migrations}
-This guide covers how you can use Active Record migrations to alter your database in a structured and organized manner.
-
-\subsubsection{\#\#Rails Database Migrations in Mongo}
-
-\subsubsection{\#\#Rails Database Migrations - Take that}
-Não há necessidadde de migrations porque estamos usando mongo.
-Evitamos dor e sofrimento.
-
 \subsection{\#\#MongoMapper Validations and Callbacks}
-This guide covers how you can use Active Record validations and callbacks.
+This guide covers how you can use MongoMapper validations and callbacks.
 
 \subsection{\#\#MongoMapper Associations}
-This guide covers all the associations provided by Active Record.
+This guide covers all the associations provided by MongoMapper.
 
 
 \subsubsection{\#\#Query Interface}
@@ -688,8 +738,6 @@ This guide covers the database query interface provided by Active Record.
 
 \subsection{\#\#REST in rails}
 
-
-
 Controllers
 Visão Geral do Action Controller
 Este guia explica como os controllers trabalham e como eles se encaixam no ciclo de requisição de sua aplicação. Ele inclue sessões, filtros, cookies, streaming de dados, como trabalhar com exceções levantadas por um request, entre outros tópicos.
@@ -700,6 +748,76 @@ Este guia cobre as maravilhas do sistema de roteamento do Rails. Se você quer e
 Rails on Rack
 Este guia cobre a integração do Rails com Rack e sua interface com componentes Rack.
 
+\subsection{\#\#Dojo}
+
+Criar o blog conforme o site guide rails
+
+- criar post com scaffold
+- criar comentarios na mão
+
+Testar:
+- mostra  um form de comentarios no post
+- cria um comentario para o  post
+- redireciona para detalhe do post
+- validações\ldots
+
+Cookbook
+
+Que tal preencher os dados para um ambiente de teste saudável?
+faker
+seed
+factory girl
+
+Paginação
+
+Quantos itens deveria ser carregado de cada vez?
+- novo teste
+- quantos arquivos existem na base?
+\begin{lstlisting}[language=ruby]
+    config.after(:each) do
+      MongoMapper.database.collections.each do |collection|
+        unless collection.name.match(/^system\./)
+          collection.remove
+        end
+      end
+    end
+\end{lstlisting}
+
+- Willpaginate
+- Ops\ldots Teste quebrado\ldots
+- Stub para corrigir o problema
+
+
+
+Títulos em branco não são legais
+Validação de modelo com mongomapper
+
+
+Melhorando Testes
+
+matcher específicos
+Dá para stub\ldots 
+
+
+
+
+
+
+\section{\#\#Highlights}
+
+\subsection{\#\#db/seed}
+
+Usando FactoryGirl para criar uma base para validação.
+passo a passo:
+
+load da fabrica de post e comentarios no seeed
+
+
+
+
+% \subsection{\#\#MongoMapper}
+% 
+% \subsubsection{\#\#Validation with MongoMapper}
 
 
 
