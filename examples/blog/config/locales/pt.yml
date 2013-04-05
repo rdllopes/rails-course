@@ -1,0 +1,13 @@
+pt:
+  post:
+    title: Título
+  time:
+    formats:
+      default: "%d/%m/%Y"  
+  mongo_mapper:
+    errors:
+      models:
+        post:
+          attributes:
+            titulo:
+              blank: ' é obrigatório.'

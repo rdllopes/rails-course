@@ -692,3 +692,5 @@ em suas aplicações Rails, comece por aqui.
 
 Rails on Rack Este guia cobre a integração do Rails com Rack e sua
 interface com componentes Rack.
+
+

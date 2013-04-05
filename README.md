@@ -1,23 +1,64 @@
 rails-course
 ============
+DSL
+
+Gemfile detalhes
+
+Mongo
+
+
+Ecosistema rails
 
 Bundler
 
 Gemfile
 
-DSL
-
-Gemfile detalhes
-
 RVM
 
 RSPEC
 
-Rails HelloWorld
-
-Mongo
-
 MongoMapper
+
+Framework Rails
+
+Scaffolding
+
+Configuration
+
+Controller
+
+View
+
+Helpers
+
+Validation
+
+Intertionalization
+
+Ferramentas do dia a dia
+
+Rspec integration
+
+Factory Girl
+
+Rakes
+
+Faker
+
+Debugging
+
+Autenticação
+
+Conceitos avançados
+
+ActiveResource
+
+Caching
+
+Rack Middleware
+
+---
+
 
 Views
 Layouts e Renderização no Rails
@@ -26,7 +67,7 @@ Layouts e Renderização no Rails
 Action View Form Helpers
   Guia para utilização dos Form helpers do Rails.
 
-Jsonify
+Haml
 
 REST in rails
 
@@ -37,9 +78,6 @@ Este guia explica como os controllers trabalham e como eles se encaixam no ciclo
 
 Roteamento Rails de Fora para Dentro
 Este guia cobre as maravilhas do sistema de roteamento do Rails. Se você quer entender como usar as rotas em suas aplicações Rails, comece por aqui.
-
-Rails on Rack
-Este guia cobre a integração do Rails com Rack e sua interface com componentes Rack.
 
 API de Internacionalização do Rails
 Este guia cobre como adicionar internacionalização em sua aplicação. Sua aplicação irá ser capaz de traduzir conteúdo para diferentes idiomas, alterar regras de pluralização, usar formatação correta de datas para cada país e muito mais.
@@ -61,5 +99,8 @@ Este guia cobre as ferramentas de linha de comando e tarefas rake disponibilizad
 
 Caching with Rails
 Varia técnicas de caching disponibilizadas pelo Rails. (Ainda em desenvolvimento)
+
+Rails on Rack
+Este guia cobre a integração do Rails com Rack e sua interface com componentes Rack.
 
 

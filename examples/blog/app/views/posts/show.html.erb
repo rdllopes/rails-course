@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Titulo:</b>
+  <%= @post.titulo %>
+</p>
+
+<p>
+  <b>Conteudo:</b>
+  <%= simple_format(@post.conteudo) %>
+</p>
+
+<p>
+  <b>Comentários:</b>
+    <% @post.comentarios.each do |c| %>
+      <p><%= c.autor %></p>
+      <%= simple_format(c.texto) %>
+    <% end %>
+</p>
+
+<h2>Adicionar comentário</h2>
+
+<%= form_for([@post, @post.comentarios.build]) do |f| %>
+  <%= f.label :autor %>
+  <%= f.text_field :autor %><br />
+  <%= f.label :texto %>
+	<%= f.text_field :texto %><br />
+  <%= f.submit%>
+<% end %>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
